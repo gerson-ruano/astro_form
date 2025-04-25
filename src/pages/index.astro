@@ -1,9 +1,10 @@
 ---
 import Layout from '../components/Layout.astro';
 import FeedbackForm from '../components/FeedbackForm.astro';
+import UserForm from '../components/UserForm.astro';
 ---
 
-<Layout title="Astro Toolbox">
+<Layout title="Formulario RAP">
   <main>
     <div class="header">
       <div class="logo">
@@ -14,25 +15,22 @@ import FeedbackForm from '../components/FeedbackForm.astro';
       </div>
     </div>
     <div class="intro">
-      <p>
-        Hi 👋! This template gives you an
-        <a href="https://astro.build/">Astro</a> app with the scaffolding for
-        <a href="https://ntl.fyi/3upc4Qo">Netlify Functions</a>, <a
-          href="https://ntl.fyi/3bICRk6">Forms</a
-        >, and
-        <a href="https://ntl.fyi/3PcY8RH">Redirects</a>. Our aim was to give you
-        the code you would need to hit the ground running with a few fun
-        features.
+      <h2>Registro de asistencia RAP</h2>
+      <p style="text-align: justify;">
+        Este formulario tiene como objetivo registrar la asistencia al evento de
+        capacitación RAP, del día 24/04/2025 a las 17:00.
       </p>
-
-      <p>
-        You can find the code for this project on GitHub at
-        <a href="https://github.com/netlify-templates/astro-toolbox"
-          >https://github.com/netlify-templates/astro-toolbox</a
-        >! Happy coding!
+      <p >🔒 Nota de privacidad:</p>
+      <p style="text-align: justify;">
+        La información recopilada será utilizada exclusivamente con fines
+        administrativos y de seguimiento del evento. No se recopilarán datos
+        sensibles, ni se compartirá la información con terceros. Capacitación
+        Dirigida para Distritos 4, 5, 6, 7, Subestaciones, Jefes de Servicio y
+        Analistas.
       </p>
     </div>
-    <FeedbackForm />
+    <UserForm />
+    <!--FeedbackForm /-->
     <a class="jokes-link" href="/api/joke">
       <h3>Click here for function-loaded jokes!</h3>
     </a>
