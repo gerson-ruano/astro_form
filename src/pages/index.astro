@@ -9,13 +9,14 @@ import UserForm from '../components/UserForm.astro';
     <div class="header">
       <div class="logo">
         <img
-          src="https://user-images.githubusercontent.com/43764894/223557634-f62606c5-bdf9-476c-9264-0d3728189962.png"
-          alt="Netlify and Astro.js logos"
-        />
+                class="size-10 p-1 sm:size-4"
+                src="/assets/img/rap_logo.png"
+                alt="rap_logo"
+              />
       </div>
     </div>
     <div class="intro">
-      <h2>Registro de asistencia RAP</h2>
+      <h2 style="text-align: center;">Registro de asistencia RAP</h2>
       <p style="text-align: justify;">
         Este formulario tiene como objetivo registrar la asistencia al evento de
         capacitación RAP, del día 24/04/2025 a las 17:00.
@@ -31,9 +32,9 @@ import UserForm from '../components/UserForm.astro';
     </div>
     <UserForm />
     <!--FeedbackForm /-->
-    <a class="jokes-link" href="/api/joke">
+    <!--a class="jokes-link" href="/api/joke">
       <h3>Click here for function-loaded jokes!</h3>
-    </a>
+    </a-->
   </main>
 </Layout>
 

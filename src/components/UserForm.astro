@@ -25,44 +25,38 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
     <input type="text" id="nombres" name="Nombres" required />
 
     <label for="nip">NIP</label>
-    <input type="number" id="nip" name="Nip" required pattern="^\d{4,5}$" />
+    <input
+      type="number"
+      id="nip"
+      name="Nip"
+      placeholder="ejemplo 17345"
+      required
+      pattern="^\d{4,5}$"
+    />
 
     <!-- Grado / Rango -->
     <label for="grado">Grado / Rango</label>
     <select id="grado" name="Grado_Rango" required>
       <option value="" disabled selected>Seleccione un grado</option>
-      {
-        grados.map((grado) => (
-          <option value={grado}>{grado}</option>
-        ))
-      }
+      {grados.map((grado) => <option value={grado}>{grado}</option>)}
     </select>
 
     <!-- Rol -->
     <label for="rol">Rol</label>
     <select id="rol" name="ROL" required>
       <option value="" disabled selected>Seleccione un Rol</option>
-      {
-        roles.map((rol) => (
-          <option value={rol}>{rol}</option>
-        ))
-      }
+      {roles.map((rol) => <option value={rol}>{rol}</option>)}
     </select>
 
     <label for="usuariorap">Usuario RAP</label>
-    <input type="text" id="usuariorap" name="Usuariorap" />
+    <input type="text" id="usuariorap" placeholder="ejemplo luis.ramirez" />
 
     <label for="guardia">Guardia</label>
     <div class="radio-group">
       {
         guardias.map((guardia) => (
           <div class="radio-item">
-            <input
-              type="radio"
-              id={guardia}
-              name="Guardia"
-              value={guardia}
-            />
+            <input type="radio" id={guardia} name="Guardia" value={guardia} />
             <label for={guardia} class="radio-label">
               {guardia}
             </label>
@@ -75,38 +69,46 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
     <label for="destino">Destino</label>
     <select id="destino" name="Destino" required>
       <option value="" disabled selected>Seleccione un Destino</option>
-      {
-        destinos.map((destino) => (
-          <option value={destino}>{destino}</option>
-        ))
-      }
+      {destinos.map((destino) => <option value={destino}>{destino}</option>)}
     </select>
 
     <!-- Subdestino -->
-    <label for="subdestino">Subdestino</label>
-    <select id="subdestino" name="Subdestino" required>
-      <option value="" disabled selected>Seleccione un Subdestino</option>
-    </select>
+    <div class="form-group">
+      <label for="subdestino">SubDestino / Delegación</label>
+      <select id="subdestino" name="Subdestino" required>
+        <option value="" disabled selected>Seleccione un subdestino</option>
+        <!-- Opciones se insertan dinámicamente -->
+      </select>
 
-    <label for="telefono">Numero de Teléfono</label>
-    <input type="tel" id="telefono" name="Numero_de_Telefono" required />
+      <label for="telefono">Número de Teléfono</label>
+      <input type="tel" id="telefono" name="Numero_de_Telefono" />
+    </div>
 
     <label for="comentarios">Comentarios o Preguntas</label>
     <textarea id="comentarios" name="Comentarios" rows="3"></textarea>
 
-    <button type="submit">Enviar</button>
+    <div style="display: flex; justify-content: center; margin-top: 1rem;">
+      <button type="submit">Enviar</button>
+    </div>
   </form>
+  <div id="errorMensaje"></div>
 </div>
 
 <style>
   .feedback-form {
-    margin: 40px 40px;
-    min-width: 250px;
-    width: 45%;
+    max-width: 600px;
+    margin: auto;
+    padding: 1rem;
+    display: grid;
+    gap: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
+
   label {
-    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
   }
+
   input,
   textarea,
   button {
@@ -117,6 +119,7 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
     padding: 12px 20px;
     width: 100%;
   }
+
   button {
     background-color: #2bdcd2;
     border: 1px solid #2bdcd2;
@@ -124,6 +127,7 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
     font-size: 16px;
     width: 50%;
   }
+
   .hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -134,33 +138,66 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
     width: 1px;
   }
 
+  input[type='text'],
+  input[type='number'],
+  input[type='tel'],
+  input[type='email'],
+  textarea,
   select {
-    border-radius: 5px;
     border: 1px solid #cbd5e1;
-    font-size: inherit;
-    margin: 15px 0;
+    /* color inicial */
+    border-radius: 6px;
     padding: 12px 20px;
+    font-size: 1rem;
     width: 100%;
+    transition: border-color 0.3s ease;
   }
-  
+
+  /* Al hacer clic o enfocar el campo */
+  input[type='text']:focus,
+  input[type='number']:focus,
+  input[type='tel']:focus,
+  input[type='email']:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #007bff;
+    /* azul */
+    outline: none;
+  }
+
   .radio-group {
     display: flex;
     gap: 20px;
     margin: 15px 0;
   }
-  
+
   .radio-item {
     display: flex;
     align-items: center;
   }
-  
-  input[type="radio"] {
+
+  input[type='radio'] {
     width: auto;
     margin: 0 8px 0 0;
   }
-  
+
   .radio-label {
     margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .feedback-form {
+      padding: 1rem;
+    }
+
+    select {
+      font-size: 1rem;
+    }
+  }
+
+  #errorMensaje {
+    color: red;
+    margin-top: 10px;
   }
 </style>
 
@@ -168,28 +205,29 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
   // Get the form elements
   const destinoSelect = document.getElementById('destino');
   const subdestinoSelect = document.getElementById('subdestino');
-  
+
   // Define the subdestinos mapping
   const subdestinos = {
-    "Comisaría 11": ["Huehuetenango", "Quiché"],
-    "Comisaría 12": ["Escuintla", "Santa Rosa"],
-    "Comisaría 13": ["Ciudad Capital", "Mixco"],
+    'Comisaría 11': ['Huehuetenango', 'Quiché'],
+    'Comisaría 12': ['Escuintla', 'Santa Rosa'],
+    'Comisaría 13': ['Ciudad Capital', 'Mixco'],
     // Add the rest of your subdestinos here
   };
-  
+
   // Add event listener to the destino select
   destinoSelect.addEventListener('change', updateSubdestinos);
-  
+
   // Function to update subdestinos based on selected destino
   function updateSubdestinos() {
     const selectedDestino = destinoSelect.value;
-    
+
     // Clear current options
-    subdestinoSelect.innerHTML = '<option value="" disabled selected>Seleccione un Subdestino</option>';
-    
+    subdestinoSelect.innerHTML =
+      '<option value="" disabled selected>Seleccione un Subdestino</option>';
+
     // If there are subdestinos for the selected destino, add them
     if (subdestinos[selectedDestino]) {
-      subdestinos[selectedDestino].forEach(subdestino => {
+      subdestinos[selectedDestino].forEach((subdestino) => {
         const option = document.createElement('option');
         option.value = subdestino;
         option.textContent = subdestino;
@@ -199,12 +237,40 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
     } else {
       // If no subdestinos exist for this destino
       const option = document.createElement('option');
-      option.value = "No hay subdestinos";
-      option.textContent = "No hay subdestinos";
+      option.value = 'No hay subdestinos';
+      option.textContent = 'No hay subdestinos';
       subdestinoSelect.appendChild(option);
     }
   }
-  
+
   // Initialize subdestinos on page load
   document.addEventListener('DOMContentLoaded', updateSubdestinos);
+  const formulario = document.getElementById('registro-usuarios');
+  const subdestino = document.getElementById('subdestino');
+  const telefono = document.getElementById('telefono');
+  const errorMensaje = document.getElementById('errorMensaje');
+
+  formulario.addEventListener('submit', function (e) {
+    e.preventDefault(); // Previene el envío por defecto
+
+    // Limpia el mensaje anterior
+    errorMensaje.textContent = '';
+
+    // Validación de los campos
+    if (subdestino.value === '' || telefono.value.trim() === '') {
+      errorMensaje.textContent = 'Por favor complete todos los campos.';
+      return;
+    }
+
+    // Validación del teléfono: solo números y longitud de 8
+    const telefonoRegex = /^[0-9]{8}$/;
+    if (!telefonoRegex.test(telefono.value)) {
+      errorMensaje.textContent =
+        'Ingrese un número de teléfono válido (8 dígitos).';
+      return;
+    }
+
+    // Si pasa todas las validaciones, redirige o realiza alguna acción
+    window.location.href = '/success.astro'; // Cambia esta línea según tus necesidades
+  });
 </script>
