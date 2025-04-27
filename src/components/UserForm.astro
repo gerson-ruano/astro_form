@@ -5,14 +5,18 @@ import {
   guardias,
   destinos,
   subdestinos,
-} from '../data/options.ts';
-const selectedDestino = Astro.props.selectedDestino || destinos[0];
-const subdestinoOptions = subdestinos[selectedDestino] || [];
+} from '../data/options';
+//const selectedDestino = Astro.props.selectedDestino || destinos[0];
+//const subdestinoOptions = subdestinos[selectedDestino] || [];
+
+//const selectedDestino = Astro.props.selectedDestino || Object.keys(subdestinos)[0];
+//const subdestinoOptions = subdestinos[selectedDestino] || [];
 ---
 
 <div class="feedback-form">
   <form
     name="registro-usuarios"
+    id="registro-usuarios"
     method="POST"
     data-netlify="true"
     netlify-honeypot="bot-field"
@@ -21,77 +25,103 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
     <input type="hidden" name="form-name" value="registro-usuarios" />
     <input type="hidden" name="bot-field" />
 
-    <label for="nombres">Nombre Completo</label>
-    <input type="text" id="nombres" name="Nombres" required />
+    <!-- Nombre Completo -->
+    <div class="form-group">
+      <label for="nombres">Nombre Completo</label>
+      <input type="text" id="nombres" name="Nombres" required />
+    </div>
 
-    <label for="nip">NIP</label>
-    <input
-      type="number"
-      id="nip"
-      name="Nip"
-      placeholder="ejemplo 17345"
-      required
-      pattern="^\d{4,5}$"
-    />
+    <!-- NIP -->
+    <div class="form-group">
+      <label for="nip">NIP</label>
+      <input
+        type="number"
+        id="nip"
+        name="nip"
+        placeholder="ejemplo 17345"
+        required
+        pattern="^\d{4,5}$"
+      />
+    </div>
 
     <!-- Grado / Rango -->
-    <label for="grado">Grado / Rango</label>
-    <select id="grado" name="Grado_Rango" required>
-      <option value="" disabled selected>Seleccione un grado</option>
-      {grados.map((grado) => <option value={grado}>{grado}</option>)}
-    </select>
+    <div class="form-group">
+      <label for="grado">Grado / Rango</label>
+      <select id="grado" name="Grado_Rango" required>
+        <option value="" disabled selected>Seleccione un grado</option>
+        {grados.map((grado) => <option value={grado}>{grado}</option>)}
+      </select>
+    </div>
 
     <!-- Rol -->
-    <label for="rol">Rol</label>
-    <select id="rol" name="ROL" required>
-      <option value="" disabled selected>Seleccione un Rol</option>
-      {roles.map((rol) => <option value={rol}>{rol}</option>)}
-    </select>
+    <div class="form-group">
+      <label for="rol">Rol</label>
+      <select id="rol" name="ROL" required>
+        <option value="" disabled selected>Seleccione un Rol</option>
+        {roles.map((rol) => <option value={rol}>{rol}</option>)}
+      </select>
+    </div>
 
-    <label for="usuariorap">Usuario RAP</label>
-    <input type="text" id="usuariorap" placeholder="ejemplo luis.ramirez" />
+    <!-- Usuario -->
+    <div class="form-group">
+      <label for="usuariorap">Usuario RAP</label>
+      <input type="text" id="usuariorap" placeholder="ejemplo luis.ramirez" />
+    </div>
 
-    <label for="guardia">Guardia</label>
-    <div class="radio-group">
-      {
-        guardias.map((guardia) => (
-          <div class="radio-item">
-            <input type="radio" id={guardia} name="Guardia" value={guardia} />
-            <label for={guardia} class="radio-label">
-              {guardia}
-            </label>
-          </div>
-        ))
-      }
+    <!-- Guardia -->
+    <div class="form-group">
+      <label for="guardia">Guardia a la que pertenece</label>
+      <div class="radio-group">
+        {
+          guardias.map((guardia) => (
+            <div class="radio-item">
+              <input type="radio" id={guardia} name="Guardia" value={guardia} />
+              <label for={guardia} class="radio-label">
+                {guardia}
+              </label>
+            </div>
+          ))
+        }
+      </div>
     </div>
 
     <!-- Destino -->
-    <label for="destino">Destino</label>
-    <select id="destino" name="Destino" required>
-      <option value="" disabled selected>Seleccione un Destino</option>
-      {destinos.map((destino) => <option value={destino}>{destino}</option>)}
-    </select>
+    <div class="form-group">
+      <label for="destino">Destino</label>
+      <select id="destino" name="Destino" required>
+        <option value="" disabled selected>Seleccione un Destino</option>
+        {destinos.map((destino) => <option value={destino}>{destino}</option>)}
+      </select>
+    </div>
 
     <!-- Subdestino -->
     <div class="form-group">
-      <label for="subdestino">SubDestino / Delegación</label>
+      <label for="subdestino"
+        >SubDestino (Estacion / Subestación / Delegación)
+      </label>
       <select id="subdestino" name="Subdestino" required>
         <option value="" disabled selected>Seleccione un subdestino</option>
         <!-- Opciones se insertan dinámicamente -->
       </select>
+    </div>
 
+    <!-- Telefono -->
+    <div class="form-group">
       <label for="telefono">Número de Teléfono</label>
       <input type="tel" id="telefono" name="Numero_de_Telefono" />
     </div>
 
-    <label for="comentarios">Comentarios o Preguntas</label>
-    <textarea id="comentarios" name="Comentarios" rows="3"></textarea>
-
+    <!-- Comentarios -->
+    <div class="form-group">
+      <label for="comentarios">Comentarios o Preguntas</label>
+      <textarea id="comentarios" name="Comentarios" rows="3"></textarea>
+    </div>
+    <div id="errorMensaje"></div>
     <div style="display: flex; justify-content: center; margin-top: 1rem;">
       <button type="submit">Enviar</button>
     </div>
   </form>
-  <div id="errorMensaje"></div>
+  
 </div>
 
 <style>
@@ -196,36 +226,49 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
   }
 
   #errorMensaje {
-    color: red;
+    color: rgb(250, 245, 245);
     margin-top: 10px;
+  }
+
+  /* Estilo para los mensajes de error */
+  .alert-error {
+    padding: 15px;
+    background-color: #c46a6a;
+    color: rgb(8, 1, 1);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    display: none; /* Se oculta inicialmente */
+  }
+
+  .alert-error ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .alert-error ul li {
+    list-style-type: disc;
   }
 </style>
 
-<script>
-  // Get the form elements
+<script type="module">
+  import { subdestinos } from './src/data/options.ts';
+
+  const subdestinosData = JSON.parse(JSON.stringify(subdestinos));
+
   const destinoSelect = document.getElementById('destino');
   const subdestinoSelect = document.getElementById('subdestino');
+  const formulario = document.getElementById('registro-usuarios');
+  const nip = document.querySelector('#nip');
+  const errorMensaje = document.getElementById('errorMensaje');
 
-  // Define the subdestinos mapping
-  const subdestinos = {
-    'Comisaría 11': ['Huehuetenango', 'Quiché'],
-    'Comisaría 12': ['Escuintla', 'Santa Rosa'],
-    'Comisaría 13': ['Ciudad Capital', 'Mixco'],
-    // Add the rest of your subdestinos here
-  };
-
-  // Add event listener to the destino select
   destinoSelect.addEventListener('change', updateSubdestinos);
 
-  // Function to update subdestinos based on selected destino
   function updateSubdestinos() {
     const selectedDestino = destinoSelect.value;
-
-    // Clear current options
     subdestinoSelect.innerHTML =
       '<option value="" disabled selected>Seleccione un Subdestino</option>';
 
-    // If there are subdestinos for the selected destino, add them
     if (subdestinos[selectedDestino]) {
       subdestinos[selectedDestino].forEach((subdestino) => {
         const option = document.createElement('option');
@@ -235,42 +278,46 @@ const subdestinoOptions = subdestinos[selectedDestino] || [];
       });
       subdestinoSelect.disabled = false;
     } else {
-      // If no subdestinos exist for this destino
       const option = document.createElement('option');
-      option.value = 'No hay subdestinos';
+      option.value = '';
       option.textContent = 'No hay subdestinos';
       subdestinoSelect.appendChild(option);
+      subdestinoSelect.disabled = true;
     }
   }
 
-  // Initialize subdestinos on page load
-  document.addEventListener('DOMContentLoaded', updateSubdestinos);
-  const formulario = document.getElementById('registro-usuarios');
-  const subdestino = document.getElementById('subdestino');
-  const telefono = document.getElementById('telefono');
-  const errorMensaje = document.getElementById('errorMensaje');
+  document.addEventListener('DOMContentLoaded', () => {
+    subdestinoSelect.disabled = true;
+  });
 
   formulario.addEventListener('submit', function (e) {
-    e.preventDefault(); // Previene el envío por defecto
+    e.preventDefault();
+    errorMensaje.innerHTML = ''; // Limpiar mensajes de error previos
+    const errorList = [];
 
-    // Limpia el mensaje anterior
-    errorMensaje.textContent = '';
-
-    // Validación de los campos
-    if (subdestino.value === '' || telefono.value.trim() === '') {
-      errorMensaje.textContent = 'Por favor complete todos los campos.';
-      return;
+    // Validación: campo subdestino no vacío
+    if (subdestinoSelect.value === '') {
+      errorList.push('Por favor complete todos los campos.');
     }
 
-    // Validación del teléfono: solo números y longitud de 8
-    const telefonoRegex = /^[0-9]{8}$/;
-    if (!telefonoRegex.test(telefono.value)) {
-      errorMensaje.textContent =
-        'Ingrese un número de teléfono válido (8 dígitos).';
-      return;
+    const nipRegex = /^[0-9]{4,5}$/;
+    if (nip && !nipRegex.test(nip.value)) {
+      errorList.push('Ingrese un número de NIP válido.');
     }
 
-    // Si pasa todas las validaciones, redirige o realiza alguna acción
-    window.location.href = '/success.astro'; // Cambia esta línea según tus necesidades
+    if (errorList.length > 0) {
+      // Mostrar el contenedor de errores
+      errorMensaje.classList.add('alert-error');
+      errorMensaje.innerHTML =
+        '<ul>' +
+        errorList.map((error) => `<li>${error}</li>`).join('') +
+        '</ul>';
+      errorMensaje.style.display = 'block'; // Mostrar el contenedor de errores
+      return; // Detener el envío del formulario
+    }
+
+    formulario.reset();
+
+    window.location.href = '/success';
   });
 </script>
