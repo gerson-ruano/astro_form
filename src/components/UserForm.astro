@@ -6,7 +6,7 @@ import {
   destinos,
   comentarios,
   subdestinos,
-} from '../data/options';
+} from '../data/options.js';
 ---
 
 <div class="feedback-form">
@@ -282,7 +282,7 @@ import {
 </style>
 
 <script type="module">
-  import { subdestinos } from './src/data/options.js';
+  import { subdestinos } from './src/data/options';
 
   const subdestinosData = JSON.parse(JSON.stringify(subdestinos));
 
