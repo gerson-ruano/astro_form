@@ -1,8 +1,17 @@
-## Table of Contents:
+## Contenido:
 
 Este proyecto de FORMULARIO de registro [Astro](https://astro.build) esta basado en el proyecto [Astro-toolbox](https://github.com/netlify-templates/astro-toolbox/) 
 
+## Instalación
 
+If you want to get started locally, you can clone the project, install the dependencies and run the dev command!
+
+```
+git clone https://github.com/netlify-templates/astro-form
+cd astro-form
+npm install
+npm run dev
+```
 # Astro Toolbox Template  
 
 ![Netlify + Astro](https://user-images.githubusercontent.com/43764894/223557634-f62606c5-bdf9-476c-9264-0d3728189962.png)
