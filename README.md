@@ -1,3 +1,8 @@
+## Table of Contents:
+
+Este proyecto de FORMULARIO de registro [Astro](https://astro.build) esta basado en el proyecto [Astro-toolbox](https://github.com/netlify-templates/astro-toolbox/) 
+
+
 # Astro Toolbox Template  
 
 ![Netlify + Astro](https://user-images.githubusercontent.com/43764894/223557634-f62606c5-bdf9-476c-9264-0d3728189962.png)
@@ -7,31 +12,6 @@ This is an [Astro](https://astro.build) project bootstrapped from the Astro CLI.
 [![Deploy to Netlify Button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-toolbox?utm_campaign=template-team&utm_source=dtn-button&utm_medium=dtn-button&utm_term=astro-tt-dtn-button&utm_content=astro-tt-dtn-button)
 
 Click this button and it will help you create a new repo, create a new Netlify project, and deploy!
-
-Here's a video for more info: https://youtu.be/GrSLYq6ZTes
-& a blog post too: https://ntl.fyi/3IrbbN7.
-
-## Table of Contents:
-
-- [Getting Started](#getting-started)
-  - [Running locally with the Netlify CLI](#running-locally-with-the-netlify-cli)
-- [Deploy to Netlify](#deploy-to-netlify)
-  - [Deploying using the Netlify CLI](#deploying-using-the-netlify-cli)
-- [Forms](#forms)
-  - [Adding a Custom Submission Page](#adding-a-custom-submission-page)
-  - [Blocking Bot Spam with a Honeypot Field](#blocking-bot-spam-with-a-honeypot-field)
-  - [Forms Resources](#forms-resources)
-- [Netlify Functions](#netlify-functions)
-  - [Netlify Functions Resources](#netlify-functions-resources)
-- [Redirects](#redirects)
-  - [Redirect Resources](#redirect-resources)
-- [Astro + Netlify Resources](#astro--netlify-resources)
-- [Project Structure](#project-structure)
-- [Commands](#commands)
-- [Testing](#testing)
-  - [Included Default Testing](#included-default-testing)
-  - [Removing Renovate](#removing-renovate)
-  - [Removing Cypress](#removing-cypress)
 
 ## Getting Started
 

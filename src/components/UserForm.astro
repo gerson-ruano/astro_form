@@ -4,13 +4,9 @@ import {
   roles,
   guardias,
   destinos,
+  comentarios,
   subdestinos,
 } from '../data/options';
-//const selectedDestino = Astro.props.selectedDestino || destinos[0];
-//const subdestinoOptions = subdestinos[selectedDestino] || [];
-
-//const selectedDestino = Astro.props.selectedDestino || Object.keys(subdestinos)[0];
-//const subdestinoOptions = subdestinos[selectedDestino] || [];
 ---
 
 <div class="feedback-form">
@@ -27,26 +23,27 @@ import {
 
     <!-- Nombre Completo -->
     <div class="form-group">
-      <label for="nombres">Nombre Completo</label>
+      <label for="nombres"
+        >Nombre Completo <span class="required">*</span></label
+      >
       <input type="text" id="nombres" name="Nombres" required />
     </div>
 
     <!-- NIP -->
     <div class="form-group">
-      <label for="nip">NIP</label>
+      <label for="nip">NIP <span class="required">*</span></label>
       <input
         type="number"
         id="nip"
         name="nip"
         placeholder="ejemplo 17345"
         required
-        pattern="^\d{4,5}$"
       />
     </div>
 
     <!-- Grado / Rango -->
     <div class="form-group">
-      <label for="grado">Grado / Rango</label>
+      <label for="grado">Grado / Rango <span class="required">*</span></label>
       <select id="grado" name="Grado_Rango" required>
         <option value="" disabled selected>Seleccione un grado</option>
         {grados.map((grado) => <option value={grado}>{grado}</option>)}
@@ -55,7 +52,7 @@ import {
 
     <!-- Rol -->
     <div class="form-group">
-      <label for="rol">Rol</label>
+      <label for="rol">Rol <span class="required">*</span></label>
       <select id="rol" name="ROL" required>
         <option value="" disabled selected>Seleccione un Rol</option>
         {roles.map((rol) => <option value={rol}>{rol}</option>)}
@@ -87,7 +84,7 @@ import {
 
     <!-- Destino -->
     <div class="form-group">
-      <label for="destino">Destino</label>
+      <label for="destino">Destino <span class="required">*</span></label>
       <select id="destino" name="Destino" required>
         <option value="" disabled selected>Seleccione un Destino</option>
         {destinos.map((destino) => <option value={destino}>{destino}</option>)}
@@ -97,9 +94,9 @@ import {
     <!-- Subdestino -->
     <div class="form-group">
       <label for="subdestino"
-        >SubDestino (Estacion / Subestación / Delegación)
-      </label>
-      <select id="subdestino" name="Subdestino" required>
+        >SubDestino 
+      </label>(Estacion / Subestación / Delegación)
+      <select id="subdestino" name="Subdestino">
         <option value="" disabled selected>Seleccione un subdestino</option>
         <!-- Opciones se insertan dinámicamente -->
       </select>
@@ -111,17 +108,35 @@ import {
       <input type="tel" id="telefono" name="Numero_de_Telefono" />
     </div>
 
-    <!-- Comentarios -->
-    <div class="form-group">
+    <!--div class="form-group">
       <label for="comentarios">Comentarios o Preguntas</label>
       <textarea id="comentarios" name="Comentarios" rows="3"></textarea>
+    </div-->
+  
+    <!-- Comentarios -->
+    <label for="comentario">Opiniones o comentarios</label>
+    <div class="form-group">
+      <div class="radio-list">
+        {
+          comentarios.map((comentario) => (
+            <div class="radio-item">
+              <input type="radio" id={comentario} name="Comentario" value={comentario} />
+              <label for={comentario} class="radio-label">
+                {comentario}
+              </label>
+            </div>
+          ))
+        }
+      </div>
     </div>
+
+    <!-- error -->
     <div id="errorMensaje"></div>
+
     <div style="display: flex; justify-content: center; margin-top: 1rem;">
       <button type="submit">Enviar</button>
     </div>
   </form>
-  
 </div>
 
 <style>
@@ -137,6 +152,12 @@ import {
   label {
     font-weight: bold;
     margin-bottom: 0.5rem;
+  }
+
+  label .required {
+    color: red;
+    font-weight: bold;
+    margin-left: 4px;
   }
 
   input,
@@ -293,16 +314,25 @@ import {
   formulario.addEventListener('submit', function (e) {
     e.preventDefault();
     errorMensaje.innerHTML = ''; // Limpiar mensajes de error previos
+    errorMensaje.classList.remove('alert-error'); // Limpiar clase antes de validar
+    errorMensaje.style.display = 'none';
+
     const errorList = [];
 
     // Validación: campo subdestino no vacío
-    if (subdestinoSelect.value === '') {
+    /*if (subdestinoSelect.value === '') {
       errorList.push('Por favor complete todos los campos.');
-    }
+    }*/
 
     const nipRegex = /^[0-9]{4,5}$/;
     if (nip && !nipRegex.test(nip.value)) {
-      errorList.push('Ingrese un número de NIP válido.');
+      errorList.push('Ingrese un número de NIP válido, ejemplo 17345');
+    }
+
+    const telefonoValor = telefono.value.trim();
+    const telefonoRegex = /^[0-9]{8}$/;
+    if (telefonoValor !== '' && !telefonoRegex.test(telefonoValor)) {
+      errorList.push('Ingrese un número de teléfono válido (8 dígitos).');
     }
 
     if (errorList.length > 0) {
