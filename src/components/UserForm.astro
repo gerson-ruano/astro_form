@@ -5,7 +5,6 @@ import {
   guardias,
   destinos,
   comentarios,
-  subdestinos,
 } from '../data/options.js';
 ---
 
@@ -17,9 +16,9 @@ import {
     data-netlify="true"
     netlify-honeypot="bot-field"
     class="feedback-form"
+    action="/success"
   >
     <input type="hidden" name="form-name" value="registro-usuarios" />
-    <input type="hidden" name="bot-field" />
 
     <!-- Campo Honeypot -->
     <p class="hidden">
@@ -40,7 +39,7 @@ import {
       <input
         type="number"
         id="nip"
-        name="nip"
+        name="Nip"
         placeholder="ejemplo 17345"
         required
       />
@@ -67,7 +66,7 @@ import {
     <!-- Usuario -->
     <div class="form-group">
       <label for="usuariorap">Usuario RAP</label>
-      <input type="text" id="usuariorap" placeholder="ejemplo luis.ramirez" />
+      <input type="text" id="usuariorap" name="Usuariorap" placeholder="ejemplo luis.ramirez" />
     </div>
 
     <!-- Guardia -->
@@ -245,6 +244,13 @@ import {
     margin: 0;
   }
 
+  .radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+  }
+
   @media (max-width: 600px) {
     .feedback-form {
       padding: 1rem;
@@ -282,15 +288,16 @@ import {
 </style>
 
 <script type="module">
-  import { subdestinos } from '/assets/data/options.js';
+  import { subdestinos } from '/assets/data/sub_destinos.js';
 
-  const subdestinosData = JSON.parse(JSON.stringify(subdestinos));
+  //const subdestinosData = JSON.parse(JSON.stringify(subdestinos));
 
   const destinoSelect = document.getElementById('destino');
   const subdestinoSelect = document.getElementById('subdestino');
   const formulario = document.getElementById('registro-usuarios');
   const nip = document.querySelector('#nip');
   const errorMensaje = document.getElementById('errorMensaje');
+  const telefono = document.getElementById('telefono');
 
   destinoSelect.addEventListener('change', updateSubdestinos);
 
@@ -321,27 +328,26 @@ import {
   });
 
   formulario.addEventListener('submit', function (e) {
-    e.preventDefault();
+    //e.preventDefault();
     errorMensaje.innerHTML = ''; // Limpiar mensajes de error previos
     errorMensaje.classList.remove('alert-error'); // Limpiar clase antes de validar
     errorMensaje.style.display = 'none';
 
     const errorList = [];
 
-    // Validación: campo subdestino no vacío
-    /*if (subdestinoSelect.value === '') {
-      errorList.push('Por favor complete todos los campos.');
-    }*/
-
     const nipRegex = /^[0-9]{4,5}$/;
     if (nip && !nipRegex.test(nip.value)) {
       errorList.push('Ingrese un número de NIP válido, ejemplo 17345');
+      e.preventDefault();
     }
 
     const telefonoValor = telefono.value.trim();
-    const telefonoRegex = /^[0-9]{8}$/;
-    if (telefonoValor !== '' && !telefonoRegex.test(telefonoValor)) {
-      errorList.push('Ingrese un número de teléfono válido (8 dígitos).');
+    if (telefonoValor !== '') {
+      const telefonoRegex = /^[0-9]{8}$/;
+      if (!telefonoRegex.test(telefonoValor)) {
+        errorList.push('Ingrese un número de teléfono válido (8 dígitos).');
+        e.preventDefault(); // Prevenir el envío si hay errores
+      }
     }
 
     if (errorList.length > 0) {
@@ -352,11 +358,11 @@ import {
         errorList.map((error) => `<li>${error}</li>`).join('') +
         '</ul>';
       errorMensaje.style.display = 'block'; // Mostrar el contenedor de errores
-      return; // Detener el envío del formulario
+      return false; // Detener el envío del formulario
     }
 
     formulario.reset();
 
-    window.location.href = '/success';
+    //window.location.href = '/success';
   });
 </script>
