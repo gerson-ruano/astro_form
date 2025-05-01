@@ -9,6 +9,10 @@ import {
 ---
 
 <div class="feedback-form">
+  <div id="already-submitted" class="alert-success" style="display: none;">
+    <h3>Usuario registrado</h3>
+    <p>Formulario ya enviado. No es necesario volver a rellenar el formulario.</p>
+  </div>
   <form
     name="registro-usuarios"
     id="registro-usuarios"
@@ -19,6 +23,7 @@ import {
     action="/success"
   >
     <input type="hidden" name="form-name" value="registro-usuarios" />
+    <input type="hidden" id="submission-id" name="submission_id" value="" />
 
     <!-- Campo Honeypot -->
     <p class="hidden">
@@ -141,7 +146,7 @@ import {
   <div data-netlify-recaptcha="true"></div>
 
     <div style="display: flex; justify-content: center; margin-top: 1rem;">
-      <button type="submit">Enviar</button>
+      <button type="submit" id="submit-button">Enviar</button>
     </div>
   </form>
 </div>
@@ -277,6 +282,16 @@ import {
     display: none; /* Se oculta inicialmente */
   }
 
+  .alert-success {
+    padding: 15px;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    text-align: center;
+  }
+
   .alert-error ul {
     margin: 0;
     padding-left: 20px;
@@ -285,12 +300,15 @@ import {
   .alert-error ul li {
     list-style-type: disc;
   }
+
+  .form-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 </style>
 
 <script type="module">
   import { subdestinos } from '/assets/data/sub_destinos.js';
-
-  //const subdestinosData = JSON.parse(JSON.stringify(subdestinos));
 
   const destinoSelect = document.getElementById('destino');
   const subdestinoSelect = document.getElementById('subdestino');
@@ -298,6 +316,28 @@ import {
   const nip = document.querySelector('#nip');
   const errorMensaje = document.getElementById('errorMensaje');
   const telefono = document.getElementById('telefono');
+  const alreadySubmittedMessage = document.getElementById('already-submitted');
+  const submissionIdField = document.getElementById('submission-id')
+
+  // Verificar si el formulario ya ha sido enviado
+  function checkIfAlreadySubmitted() {
+    const hasSubmitted = localStorage.getItem('formSubmitted');
+    if (hasSubmitted === 'true') {
+      // Mostrar mensaje de que ya se envió
+      alreadySubmittedMessage.style.display = 'block';
+      
+      // Desactivar el formulario
+      formulario.classList.add('form-disabled');
+      
+      // Desactivar el botón de envío
+      document.getElementById('submit-button').disabled = true;
+    }
+  }
+
+  // Generar un ID único para el envío
+  function generateSubmissionId() {
+    return 'submission_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  }
 
   destinoSelect.addEventListener('change', updateSubdestinos);
 
@@ -325,10 +365,15 @@ import {
 
   document.addEventListener('DOMContentLoaded', () => {
     subdestinoSelect.disabled = true;
+
+    // Verificar si el formulario ya ha sido enviado
+    checkIfAlreadySubmitted();
+    
+    // Generar un ID único para el envío
+    submissionIdField.value = generateSubmissionId();
   });
 
   formulario.addEventListener('submit', function (e) {
-    //e.preventDefault();
     errorMensaje.innerHTML = ''; // Limpiar mensajes de error previos
     errorMensaje.classList.remove('alert-error'); // Limpiar clase antes de validar
     errorMensaje.style.display = 'none';
@@ -361,8 +406,10 @@ import {
       return false; // Detener el envío del formulario
     }
 
-    //formulario.reset();
+    // Si todo está correcto, marcar como enviado
+    localStorage.setItem('formSubmitted', 'true');
 
-    //window.location.href = '/success';
+    // Continuar con el envío normal
+    return true;
   });
 </script>
