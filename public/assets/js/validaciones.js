@@ -65,6 +65,7 @@
   });
 
   formulario.addEventListener('submit', function (e) {
+    e.preventDefault();
     errorMensaje.innerHTML = ''; // Limpiar mensajes de error previos
     errorMensaje.classList.remove('alert-error'); // Limpiar clase antes de validar
     errorMensaje.style.display = 'none';
@@ -74,7 +75,7 @@
     const nipRegex = /^[0-9]{4,5}$/;
     if (nip && !nipRegex.test(nip.value)) {
       errorList.push('Ingrese un número de NIP válido, ejemplo 17345');
-      e.preventDefault();
+      //e.preventDefault();
     }
 
     const telefonoValor = telefono.value.trim();
@@ -82,7 +83,7 @@
       const telefonoRegex = /^[0-9]{8}$/;
       if (!telefonoRegex.test(telefonoValor)) {
         errorList.push('Ingrese un número de teléfono válido (8 dígitos).');
-        e.preventDefault(); // Prevenir el envío si hay errores
+        //e.preventDefault(); // Prevenir el envío si hay errores
       }
     }
 
@@ -94,12 +95,13 @@
         errorList.map((error) => `<li>${error}</li>`).join('') +
         '</ul>';
       errorMensaje.style.display = 'block'; // Mostrar el contenedor de errores
-      return false; // Detener el envío del formulario
+      return; // Detener el envío del formulario
     }
 
     // Si todo está correcto, marcar como enviado
     localStorage.setItem('formSubmitted', 'true');
+    formulario.submit(); 
 
     // Continuar con el envío normal
-    return true;
+    //return true;
   });
